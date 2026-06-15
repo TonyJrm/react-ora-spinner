@@ -32,3 +32,11 @@ jobs:
       - name: Show npm debug log
         if: failure()
         run: cat /home/runner/.npm/_logs/*.log
+
+      - name: Debug npmrc
+        if: failure()
+        run: |
+          echo "=== repo .npmrc ==="
+          cat /home/runner/work/react-ora-spinner/react-ora-spinner/.npmrc || echo "not found"
+          echo "=== temp .npmrc ==="
+          cat /home/runner/work/_temp/.npmrc || echo "not found"
