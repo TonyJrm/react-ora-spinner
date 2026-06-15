@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ES2019",
+    "lib": [
+      "ES2019",
+      "DOM"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { SpinnerColor, resolveColor } from './spinnerColors'
-
-const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+import { resolveColor, SpinnerColor } from './spinnerColors'
+import { SPINNER_FRAMES, SpinnerVariant } from './spinnerFrames'
 
 export type SpinnerStatus = 'spinning' | 'succeed' | 'fail' | 'warn' | 'info' | 'idle'
 
@@ -9,17 +8,20 @@ export interface SpinnerState {
   frame: string
   text: string
   status: SpinnerStatus
-  color: string // couleur résolue (toujours un hex)
+  color: string // Resolved color string (e.g. '#FF6B6B')
 }
 
 export interface UseSpinnerOptions {
   text?: string
   color?: SpinnerColor // 'green' | 'blue' | '#FF6B6B' | …
+  variant?: SpinnerVariant
+  interval?: number // Interval in milliseconds for frame updates (default: 80ms)
 }
 
-export function useSpinner({ text = '', color = 'green' }: UseSpinnerOptions = {}) {
+export function useSpinner({ text = '', color = 'green', variant = 'dots', interval }: UseSpinnerOptions = {}) {
+  const frames = SPINNER_FRAMES[variant ?? 'dots']
   const [state, setState] = useState<SpinnerState>({
-    frame: FRAMES[0], text,
+    frame: frames[0], text,
     status: 'idle',
     color: resolveColor(color),
   })
@@ -31,18 +33,18 @@ export function useSpinner({ text = '', color = 'green' }: UseSpinnerOptions = {
     intervalRef.current = null
   }, [])
 
-  const start = useCallback((opts?: { text?: string; color?: SpinnerColor }) => {
+  const start = useCallback((opts?: { text?: string; color?: SpinnerColor; interval?: number }) => {
     clearSpin()
     frameIdx.current = 0
     setState(s => ({
-      frame: FRAMES[0], status: 'spinning',
+      frame: frames[0], status: 'spinning',
       text: opts?.text ?? s.text,
       color: opts?.color ? resolveColor(opts.color) : s.color,
     }))
     intervalRef.current = setInterval(() => {
-      frameIdx.current = (frameIdx.current + 1) % FRAMES.length
-      setState(s => ({ ...s, frame: FRAMES[frameIdx.current] }))
-    }, 80)
+      frameIdx.current = (frameIdx.current + 1) % frames.length
+      setState(s => ({ ...s, frame: frames[frameIdx.current] }))
+    }, opts?.interval ?? interval ?? 80)
   }, [clearSpin])
 
   const resolve = useCallback(
@@ -59,7 +61,7 @@ export function useSpinner({ text = '', color = 'green' }: UseSpinnerOptions = {
     fail: (t?: string) => resolve('fail', '✖', t),
     warn: (t?: string) => resolve('warn', '⚠', t),
     info: (t?: string) => resolve('info', 'ℹ', t),
-    stop: () => resolve('idle', FRAMES[0]),
+    stop: () => resolve('idle', frames[0]),
     setText: (t: string) => setState(s => ({ ...s, text: t })),
     setColor: (c: SpinnerColor) =>
       setState(s => ({ ...s, color: resolveColor(c) })),
