@@ -1,6 +1,6 @@
 {
   "name": "react-ora-spinner",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A React spinner component inspired by ora, with TypeScript support and custom colors",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
