@@ -226,12 +226,14 @@ type SpinnerColor = SpinnerColorName | `#${string}`
 ### `SpinnerVariant`
 
 ```ts
-type SpinnerVariant = 'dots' | 'line' | 'arc' | 'circle' | 'bounce' | 'pulse' | 'arrows'
+type SpinnerVariant = 'dots' | 'dots2' | 'dots3' | 'line' | 'arc' | 'circle' | 'bounce' | 'pulse' | 'arrows'
 ```
 
 | Variant | Frames |
 |---|---|
 | `dots` | ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏ |
+| `dots2` | ⠿ ⠟ ⠛ ⠋ ⠉ ⠁ ⠉ ⠋ ⠛ ⠟ |
+| `dots3` | ⠿ ⠾ ⠶ ⠴ ⠤ ⠠ ⠤ ⠴ ⠶ ⠾ |
 | `line` | - \ \| / |
 | `arc` | ◜ ◠ ◝ ◞ ◡ ◟ |
 | `circle` | ◐ ◓ ◑ ◒ |
